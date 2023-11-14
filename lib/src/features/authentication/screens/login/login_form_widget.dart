@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sdg_guess_quest/src/constants/sizes.dart';
 import 'package:sdg_guess_quest/src/constants/text_strings.dart';
+import 'package:sdg_guess_quest/src/features/game/screens/game_screen.dart';
+import 'package:sdg_guess_quest/src/features/game_menu/screens/start_screen.dart';
 
 class LoginFormWidget extends StatelessWidget {
   const LoginFormWidget({Key? key}) : super(key: key);
@@ -40,7 +43,8 @@ class LoginFormWidget extends StatelessWidget {
               SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                      onPressed: () {}, child: Text(login.toUpperCase())))
+                      onPressed: () => Get.to(() => const GameScreen()),
+                      child: Text(login.toUpperCase())))
             ],
           )),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sdg_guess_quest/src/features/authentication/screens/welcome/welcome_screen.dart';
+import 'package:sdg_guess_quest/src/features/game/screens/game_screen.dart';
 import 'package:sdg_guess_quest/src/utils/theme/theme.dart';
 
 void main() {
@@ -19,34 +20,27 @@ class App extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: const WelcomeScreen(),
+      home: const GameScreen(),
     );
   }
 }
 
-class AppHome extends StatefulWidget {
-  const AppHome({Key? key}) : super(key: key);
+// class AppHome extends StatefulWidget {
+//   const AppHome({Key? key}) : super(key: key);
 
-  @override
-  State<AppHome> createState() => _AppHomeState();
-}
+//   @override
+//   State<AppHome> createState() => _AppHomeState();
+// }
 
-class _AppHomeState extends State<AppHome> {
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter++;
-  //   });
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-//this is run whenever set state is called
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("SDG Home"),
-        ),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add_shopping_cart), onPressed: () {}),
-        body: const Center(child: Text("home page")));
-  }
-}
+// class _AppHomeState extends State<AppHome> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           title: const Text("SDG Home"),
+//         ),
+//         floatingActionButton: FloatingActionButton(
+//             child: const Icon(Icons.add_shopping_cart), onPressed: () {}),
+//         body: const Center(child: Text("home page")));
+//   }
+// }
