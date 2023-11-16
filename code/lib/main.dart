@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sdg_guess_quest/src/features/authentication/screens/welcome/welcome_screen.dart';
 import 'package:sdg_guess_quest/src/features/game/screens/game_screen.dart';
+import 'package:sdg_guess_quest/src/features/game_menu/screens/start_screen.dart';
 import 'package:sdg_guess_quest/src/utils/theme/theme.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class App extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: const GameScreen(),
+      home: const StartScreen(),
     );
   }
 }

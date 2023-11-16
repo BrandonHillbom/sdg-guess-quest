@@ -15,8 +15,8 @@ class HideScreenState extends State<HideScreen> {
   int clicks = 0;
 
   void registerClick() {
-    int newClicks = clicks++;
-    if (clicks >= 2) {
+    int newClicks = ++clicks;
+    if (newClicks >= 2) {
       Navigator.pop(context);
     } else {
       setState(() {
@@ -29,15 +29,13 @@ class HideScreenState extends State<HideScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: GestureDetector(
-          onTap: () => registerClick(),
-          child: Center(
-            child: Text(
-              'If you are ${widget.playerTurn}, double tap the screen to play.',
-              style: primaryFontWhite,
-            ),
+      body: GestureDetector(
+        onTap: () => registerClick(),
+        child: Center(
+          child: Text(
+            'If you are ${widget.playerTurn}, double tap the screen to play.',
+            style: primaryFontWhite,
+            textAlign: TextAlign.center,
           ),
         ),
       ),

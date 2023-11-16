@@ -15,6 +15,13 @@ TextStyle secondaryFontWhite = GoogleFonts.coiny(
   fontSize: 14,
 ));
 
+TextStyle startButtonFontWhite = GoogleFonts.coiny(
+    textStyle: const TextStyle(
+  color: Colors.white,
+  letterSpacing: 2,
+  fontSize: 20,
+));
+
 TextStyle buttonFontWhite = GoogleFonts.coiny(
     textStyle: const TextStyle(
   color: Colors.white,
