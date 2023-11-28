@@ -4,6 +4,8 @@ import 'package:sdg_guess_quest/src/constants/colors.dart';
 import 'package:sdg_guess_quest/src/constants/image_strings.dart';
 import 'package:sdg_guess_quest/src/constants/styles.dart';
 import 'package:sdg_guess_quest/src/features/game/screens/hide_screen.dart';
+import 'package:sdg_guess_quest/src/features/game/screens/info_popover_widget.dart';
+import 'package:sdg_guess_quest/src/features/game/screens/past_questions_drawer_widget.dart';
 import 'package:sdg_guess_quest/src/features/game/screens/question_popover.dart';
 import 'package:sdg_guess_quest/src/features/game/screens/response_popover.dart';
 
@@ -99,20 +101,24 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         turn = newTurn;
       });
-      if ((newTurn == 'p1' &&
-              p1SelectedCard != null &&
-              player2AskedQuestions.isNotEmpty &&
-              player2AskedQuestions.last.answer == null) ||
-          (newTurn == 'p2' &&
-              p2SelectedCard != null &&
-              player1AskedQuestions.isNotEmpty &&
-              player1AskedQuestions.last.answer == null)) {
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
-          // Show the popover after the frame is rendered
-          showResponsePopover(context);
-        });
-      }
+      createResponseWidgetIfAccepted(newTurn);
     });
+  }
+
+  void createResponseWidgetIfAccepted(String newTurn) {
+    if ((newTurn == 'p1' &&
+            p1SelectedCard != null &&
+            player2AskedQuestions.isNotEmpty &&
+            player2AskedQuestions.last.answer == null) ||
+        (newTurn == 'p2' &&
+            p2SelectedCard != null &&
+            player1AskedQuestions.isNotEmpty &&
+            player1AskedQuestions.last.answer == null)) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        // Show the popover after the frame is rendered
+        showResponsePopover(context);
+      });
+    }
   }
 
   void guessCard(GameCard guessedCard) {
@@ -201,17 +207,29 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
+  void showInfoPopover(BuildContext context, SDGCard card) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return InfoPopoverWidget(
+          card: card,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // 1.fix bug where p2 doesnt answer p1 question in round 1
-    // 2. Move into code folder
+    //high priority
+    // 1.  Move code into sepearate files, clean up  github
+    // adjust spacing, make text larger
+    // add const where needed.
+    //fix different scren sizing issues
 
-    // 3. see past questions and answers
-    // 4. fix: take out the questionmark if it is at the end and if it isnt then add it
-
-    // 5. handle on click for cards to view their details/learning
-    // 6. add highlight for selecting a guess card or flipping them over
-    // 7. fix: spacing of ask question button padding
+    //low priority
+    // . fix: spacing of ask question button padding
+    // . fix: take out the questionmark if it is at the end and if it isnt then add it
 
     return Scaffold(
       backgroundColor: primaryColor,
@@ -277,15 +295,17 @@ class _GameScreenState extends State<GameScreen> {
                     flex: 1,
                     child: Row(
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            // Handle the button press to view past questions
-                            // ...
-                          },
-                          icon: Icon(
-                            Icons.history, // Replace with the desired icon
-                            color: Colors.white, // Adjust the color as needed
-                            size: 24.0, // Adjust the size as needed
+                        Builder(
+                          builder: (context) => IconButton(
+                            onPressed: () {
+                              // Use a Builder to get a context that is a descendant of the Scaffold
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                            icon: Icon(
+                              Icons.history,
+                              color: Colors.white,
+                              size: 24.0,
+                            ),
                           ),
                         ),
                         IconButton(
@@ -309,9 +329,9 @@ class _GameScreenState extends State<GameScreen> {
             Expanded(
               flex: 7,
               child: GridView.builder(
-                  itemCount: 20,
+                  itemCount: 16,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5),
+                      crossAxisCount: 4),
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
@@ -323,6 +343,7 @@ class _GameScreenState extends State<GameScreen> {
                           setState(() {
                             p2SelectedCard = p2Cards[index];
                           });
+                          createResponseWidgetIfAccepted('p2');
                         } else if (isFlippingCard == true) {
                           //find out which player is flipping, whose turn is it to ask a question?
                           //if its p1 turn to ask then p2 asked last and had their q as
@@ -338,6 +359,13 @@ class _GameScreenState extends State<GameScreen> {
                         } else if (isGuessingCard == true) {
                           //handle the guessed card
                           guessCard(p1Cards[index]);
+                        } else {
+                          //show info card
+                          showInfoPopover(
+                              context,
+                              turn == 'p1'
+                                  ? p1Cards[index].card
+                                  : p2Cards[index].card);
                         }
                       },
                       child: Container(
@@ -345,6 +373,23 @@ class _GameScreenState extends State<GameScreen> {
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(width: 3, color: primaryColor),
                           color: secondaryColor,
+                          boxShadow: [
+                            // Add a yellow glow when the box is clickable
+                            if ((turn == 'p1' &&
+                                    !p1Cards[index].flipped &&
+                                    (isFlippingCard == true ||
+                                        p1SelectedCard == null)) ||
+                                (turn == 'p2' &&
+                                    !p2Cards[index].flipped &&
+                                    (isFlippingCard == true ||
+                                        p2SelectedCard == null)))
+                              BoxShadow(
+                                color: Colors.yellow,
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 0),
+                              ),
+                          ],
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -360,15 +405,6 @@ class _GameScreenState extends State<GameScreen> {
                                       fit: BoxFit.contain,
                                     ),
                                   ),
-
-                                  //SizedBox(height: 2), // Adjust the height as needed
-                                  // Text(
-                                  //   p1Cards[index].card.name,
-                                  //   style: TextStyle(
-                                  //     color: Colors.white, // Customize the text color
-                                  //     fontSize: 8, // Customize the font size
-                                  //   ),
-                                  //),
                                 ]
                               : [],
                         ),
@@ -402,16 +438,9 @@ class _GameScreenState extends State<GameScreen> {
                                           player2AskedQuestions.isEmpty))
                               ? 'The card your opponent will guess:'
                               : turn == 'p1'
-                                  ? 'You asked: ${player1AskedQuestions.last.isGuess == true ? '' : 'Does your card'}${player1AskedQuestions.last.question}? ${player1AskedQuestions.last.answer == true ? 'Yes' : 'No'}'
-                                  : 'You asked: ${player2AskedQuestions.last.isGuess == true ? '' : 'Does your card'}${player2AskedQuestions.last.question}? ${player1AskedQuestions.last.answer == true ? 'Yes' : 'No'}',
-                          style: (turn == 'p1' &&
-                                      (p1SelectedCard == null ||
-                                          player1AskedQuestions.isEmpty)) ||
-                                  (turn == 'p2' &&
-                                      (p2SelectedCard == null ||
-                                          player2AskedQuestions.isEmpty))
-                              ? secondaryFontWhite
-                              : smallFontWhite,
+                                  ? 'You asked: ${player1AskedQuestions.last.isGuess == true ? '' : 'Does your card '}${player1AskedQuestions.last.question}? ${player1AskedQuestions.last.answer == true ? 'Yes' : 'No'}'
+                                  : 'You asked: ${player2AskedQuestions.last.isGuess == true ? '' : 'Does your card '}${player2AskedQuestions.last.question}? ${player2AskedQuestions.last.answer == true ? 'Yes' : 'No'}',
+                          style: secondaryFontWhite,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -464,7 +493,7 @@ class _GameScreenState extends State<GameScreen> {
             ),
             Expanded(
               flex: 2,
-              child: winner != 'p1' || winner != 'p2'
+              child: winner != 'p1' && winner != 'p2'
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -592,6 +621,10 @@ class _GameScreenState extends State<GameScreen> {
             ),
           ],
         ),
+      ),
+      endDrawer: PastQuestionsDrawer(
+        player1AskedQuestions: player1AskedQuestions, // Add your questions here
+        player2AskedQuestions: player2AskedQuestions, // Add your questions here
       ),
     );
   }
