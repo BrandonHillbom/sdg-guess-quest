@@ -44,13 +44,13 @@ class HideScreenState extends State<HideScreen> {
                 // Smaller text with an SDG fact
                 Text(
                   facts[factIndex],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18, // Adjust the font size for smaller text
                     color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // The main text for player instructions
                 Text(
                   'If you are ${widget.playerTurn}, double tap the screen to play.',

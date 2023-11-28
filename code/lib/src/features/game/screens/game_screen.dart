@@ -8,6 +8,7 @@ import 'package:sdg_guess_quest/src/features/game/screens/info_popover_widget.da
 import 'package:sdg_guess_quest/src/features/game/screens/past_questions_drawer_widget.dart';
 import 'package:sdg_guess_quest/src/features/game/screens/question_popover.dart';
 import 'package:sdg_guess_quest/src/features/game/screens/response_popover.dart';
+import 'package:sdg_guess_quest/src/utils/theme/utils.dart';
 
 class QuestionObject {
   String? question;
@@ -176,10 +177,9 @@ class _GameScreenState extends State<GameScreen> {
       builder: (context) {
         return ResponsePopoverWidget(
           message: turn == 'p1'
-              ? 'Does your card ${player2AskedQuestions.last.question}'
-              : 'Does your card ${player1AskedQuestions.last.question}',
+              ? 'Does your card ${player2AskedQuestions.last.question}${checkQuestionMark(player2AskedQuestions.last.question)}'
+              : 'Does your card ${player1AskedQuestions.last.question}${checkQuestionMark(player1AskedQuestions.last.question)}',
           onButtonPressed: (buttonText) {
-            // Handle the button press here
             if (buttonText == 'yes') {
               if (turn == 'p1') {
                 setState(() {
@@ -221,15 +221,11 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //high priority
-    // 1.  Move code into sepearate files, clean up  github
-    // adjust spacing, make text larger
-    // add const where needed.
-    //fix different scren sizing issues
-
-    //low priority
+    //TODO
+    // Move code into sepearate files, clean up code with shared functions
+    // widget breakdown should be cards remaining, top right icons, cards, selected card, buttons
+    //fix different screen sizing issues
     // . fix: spacing of ask question button padding
-    // . fix: take out the questionmark if it is at the end and if it isnt then add it
 
     return Scaffold(
       backgroundColor: primaryColor,
@@ -249,7 +245,7 @@ class _GameScreenState extends State<GameScreen> {
                         Center(
                           child: Text(
                             'Cards Remaining',
-                            style: secondaryFontWhite,
+                            style: buttonFontWhite,
                           ),
                         ),
                         Row(
@@ -301,7 +297,7 @@ class _GameScreenState extends State<GameScreen> {
                               // Use a Builder to get a context that is a descendant of the Scaffold
                               Scaffold.of(context).openEndDrawer();
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.history,
                               color: Colors.white,
                               size: 24.0,
@@ -314,7 +310,7 @@ class _GameScreenState extends State<GameScreen> {
                             // ...
                             Navigator.pop(context);
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.exit_to_app, // Replace with the desired icon
                             color: Colors.white, // Adjust the color as needed
                             size: 24.0, // Adjust the size as needed
@@ -358,7 +354,11 @@ class _GameScreenState extends State<GameScreen> {
                           }
                         } else if (isGuessingCard == true) {
                           //handle the guessed card
-                          guessCard(p1Cards[index]);
+                          if (turn == 'p1') {
+                            guessCard(p1Cards[index]);
+                          } else if (turn == 'p2') {
+                            guessCard(p2Cards[index]);
+                          }
                         } else {
                           //show info card
                           showInfoPopover(
@@ -383,7 +383,7 @@ class _GameScreenState extends State<GameScreen> {
                                     !p2Cards[index].flipped &&
                                     (isFlippingCard == true ||
                                         p2SelectedCard == null)))
-                              BoxShadow(
+                              const BoxShadow(
                                 color: Colors.yellow,
                                 spreadRadius: 2,
                                 blurRadius: 5,
@@ -419,16 +419,16 @@ class _GameScreenState extends State<GameScreen> {
                   ? Column(children: [
                       Container(
                         margin: const EdgeInsets.only(bottom: 16.0),
-                        child: Text(
+                        child: const Text(
                           'Select one of the cards above that your opponent will try to guess.',
-                          style: secondaryFontWhite,
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
                       ),
                     ])
                   : Column(children: [
                       Container(
-                        margin: const EdgeInsets.only(bottom: 16.0),
+                        margin: const EdgeInsets.only(bottom: 12.0),
                         child: Text(
                           (turn == 'p1' &&
                                       (p1SelectedCard == null ||
@@ -438,20 +438,27 @@ class _GameScreenState extends State<GameScreen> {
                                           player2AskedQuestions.isEmpty))
                               ? 'The card your opponent will guess:'
                               : turn == 'p1'
-                                  ? 'You asked: ${player1AskedQuestions.last.isGuess == true ? '' : 'Does your card '}${player1AskedQuestions.last.question}? ${player1AskedQuestions.last.answer == true ? 'Yes' : 'No'}'
-                                  : 'You asked: ${player2AskedQuestions.last.isGuess == true ? '' : 'Does your card '}${player2AskedQuestions.last.question}? ${player2AskedQuestions.last.answer == true ? 'Yes' : 'No'}',
-                          style: secondaryFontWhite,
+                                  ? 'You asked: ${player1AskedQuestions.last.isGuess == true ? '' : 'Does your card '}${player1AskedQuestions.last.question}${checkQuestionMark(player1AskedQuestions.last.question)} ${player1AskedQuestions.last.answer == true ? 'Yes' : 'No'}'
+                                  : 'You asked: ${player2AskedQuestions.last.isGuess == true ? '' : 'Does your card '}${player2AskedQuestions.last.question}${checkQuestionMark(player2AskedQuestions.last.question)} ${player2AskedQuestions.last.answer == true ? 'Yes' : 'No'}',
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
                           //view card info
+                          if (turn == 'p1' && p1SelectedCard != null) {
+                            showInfoPopover(context, p1SelectedCard!.card);
+                          }
+                          if (turn == 'p2' && p2SelectedCard != null) {
+                            showInfoPopover(context, p2SelectedCard!.card);
+                          }
                         },
                         child: Container(
-                          width: 104,
-                          height: 122,
-                          padding: EdgeInsets.all(5),
+                          width: 150,
+                          height: 170,
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(width: 5, color: primaryColor),
@@ -479,10 +486,10 @@ class _GameScreenState extends State<GameScreen> {
                                 turn == 'p1'
                                     ? p1SelectedCard?.card.name ?? 'Your card'
                                     : p2SelectedCard?.card.name ?? 'Your card',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color:
                                       Colors.white, // Customize the text color
-                                  fontSize: 12, // Customize the font size
+                                  fontSize: 14, // Customize the font size
                                 ),
                               ),
                             ],
@@ -535,7 +542,7 @@ class _GameScreenState extends State<GameScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                   height:
                                       10), // Adjust the space between buttons
                               ElevatedButton(
@@ -573,7 +580,8 @@ class _GameScreenState extends State<GameScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 20), // Adjust the space between columns
+                        const SizedBox(
+                            width: 20), // Adjust the space between columns
                         Column(
                           children: [
                             ElevatedButton(
@@ -606,7 +614,7 @@ class _GameScreenState extends State<GameScreen> {
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   side: BorderSide.none,
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       vertical: 5, horizontal: 10)),
                               child:
                                   Text('Ask Question', style: buttonFontWhite),

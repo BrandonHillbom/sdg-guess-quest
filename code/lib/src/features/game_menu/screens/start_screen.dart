@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sdg_guess_quest/src/constants/colors.dart';
 import 'package:sdg_guess_quest/src/constants/sizes.dart';
 import 'package:sdg_guess_quest/src/constants/styles.dart';
@@ -33,10 +32,10 @@ class StartScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                         10.0), // Adjust the value for rounded corners
                   ),
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                       vertical: 20.0,
                       horizontal: 30.0), // Adjust padding as needed
-                  side: BorderSide(
+                  side: const BorderSide(
                     color: Colors.white, // Adjust border color
                     width: 2.0, // Adjust border width
                   ),
@@ -64,10 +63,10 @@ class StartScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                         10.0), // Adjust the value for rounded corners
                   ),
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                       vertical: 20.0,
                       horizontal: 36.0), // Adjust padding as needed
-                  side: BorderSide(
+                  side: const BorderSide(
                     color: Colors.white, // Adjust border color
                     width: 2.0, // Adjust border width
                   ),

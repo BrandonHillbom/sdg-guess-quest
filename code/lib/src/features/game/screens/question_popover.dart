@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class QuestionPopoverWidget extends StatefulWidget {
   final Function(String) onStringChanged;
@@ -16,10 +17,13 @@ class _QuestionPopoverWidgetState extends State<QuestionPopoverWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Ask a question to narrow down your character'),
+      title: const Text('Ask a question to narrow down your character'),
       content: TextField(
         controller: _textEditingController,
-        decoration: InputDecoration(labelText: 'Does your card...'),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(50), // Limit to 50 characters
+        ],
+        decoration: const InputDecoration(labelText: 'Does your card...'),
       ),
       actions: [
         ElevatedButton(
@@ -28,7 +32,7 @@ class _QuestionPopoverWidgetState extends State<QuestionPopoverWidget> {
             String enteredString = _textEditingController.text;
             widget.onStringChanged(enteredString);
           },
-          child: Text('Send'),
+          child: const Text('Send'),
         ),
       ],
     );

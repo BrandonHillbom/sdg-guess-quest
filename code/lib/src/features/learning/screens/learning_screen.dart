@@ -5,11 +5,9 @@ import 'package:sdg_guess_quest/src/constants/sdg_info.dart';
 class LearningScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Padding(
+    return Scaffold(
+      backgroundColor: secondaryColor,
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
@@ -19,14 +17,14 @@ class LearningScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
               ),
               // Title
-              Text(
+              const Text(
                 'United Nations Sustainable Development Goals', // Your title here
                 style: TextStyle(
                   fontSize: 24,
@@ -37,7 +35,7 @@ class LearningScreen extends StatelessWidget {
               const SizedBox(height: 16),
 
               // Some text below the title
-              Text(
+              const Text(
                 'The UN SDGs, or United Nations Sustainable Development Goals, are a set of 17 big goals that people from all around the world are working together to achieve. These goals aim to make our planet a better place by solving problems like poverty, hunger, and protecting the environment. This is in place so everyone can have a good life.',
                 style: TextStyle(
                   fontSize: 14,
@@ -50,7 +48,7 @@ class LearningScreen extends StatelessWidget {
                 // Subheader with SDG title
                 Text(
                   'SDG ${sdgInformation[i].number}: ${sdgInformation[i].title}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -60,14 +58,14 @@ class LearningScreen extends StatelessWidget {
                 // Description of the SDG
                 Text(
                   sdgInformation[i].description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
                 const SizedBox(height: 16),
 
                 // Subheader for Actionable Steps
-                Text(
+                const Text(
                   'What can you do?',
                   style: TextStyle(
                     fontSize: 14,
@@ -81,7 +79,7 @@ class LearningScreen extends StatelessWidget {
                   // Bullet point for each actionable step
                   Text(
                     '• $step',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                     ),
                   ),

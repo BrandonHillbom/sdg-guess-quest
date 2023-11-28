@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sdg_guess_quest/src/features/game/screens/game_screen.dart';
+import 'package:sdg_guess_quest/src/utils/theme/utils.dart';
 
 class PastQuestionsDrawer extends StatelessWidget {
   final List<QuestionObject> player1AskedQuestions;
   final List<QuestionObject> player2AskedQuestions;
 
-  PastQuestionsDrawer(
+  const PastQuestionsDrawer(
       {required this.player1AskedQuestions,
       required this.player2AskedQuestions});
 
@@ -15,7 +16,7 @@ class PastQuestionsDrawer extends StatelessWidget {
       child: Column(
         children: [
           // Drawer header with title
-          DrawerHeader(
+          const DrawerHeader(
             child: Center(
               child: Text(
                 'Past Asked Questions',
@@ -43,7 +44,7 @@ class PastQuestionsDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Player 1 Question: ${questionObject.isGuess == true ? questionObject.question : 'Does your card ${(questionObject.question ?? '')}?'}"),
+                            "Player 1 Question: ${questionObject.isGuess == true ? questionObject.question : 'Does your card ${(questionObject.question ?? '')}${checkQuestionMark(questionObject.question)}'}"),
                         Text(
                             'Player 2 Answer: ${questionObject.answer == true ? 'Yes' : 'No'}'),
                       ],
@@ -58,7 +59,7 @@ class PastQuestionsDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Player 2 Question: ${questionObject.isGuess == true ? questionObject.question : 'Does your card ${(questionObject.question ?? '')}?'}"),
+                            "Player 2 Question: ${questionObject.isGuess == true ? questionObject.question : 'Does your card ${(questionObject.question ?? '')}${checkQuestionMark(questionObject.question)}'}"),
                         Text(
                             'Player 1 Answer: ${questionObject.answer == true ? 'Yes' : 'No'}'),
                       ],

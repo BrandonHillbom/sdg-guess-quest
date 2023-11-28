@@ -23,7 +23,7 @@ class InfoPopoverWidget extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -51,7 +51,7 @@ class InfoPopoverWidget extends StatelessWidget {
               // Display card name as a header
               Text(
                 card.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -61,7 +61,7 @@ class InfoPopoverWidget extends StatelessWidget {
               // Display card description
               Text(
                 card.description,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                 ),
               ),
@@ -72,7 +72,7 @@ class InfoPopoverWidget extends StatelessWidget {
                 // Subheader with SDG title
                 Text(
                   'SDG ${sdgInformation[sdgNumber - 1].number}: ${sdgInformation[sdgNumber - 1].title}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -82,14 +82,14 @@ class InfoPopoverWidget extends StatelessWidget {
                 // Description of the SDG
                 Text(
                   sdgInformation[sdgNumber - 1].description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
                 const SizedBox(height: 16),
 
                 // Subheader for Actionable Steps
-                Text(
+                const Text(
                   'What can you do?',
                   style: TextStyle(
                     fontSize: 14,
@@ -104,7 +104,7 @@ class InfoPopoverWidget extends StatelessWidget {
                   // Bullet point for each actionable step
                   Text(
                     '• $step',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                     ),
                   ),

@@ -15,7 +15,7 @@ class ResponsePopoverWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(message),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -24,14 +24,14 @@ class ResponsePopoverWidget extends StatelessWidget {
                     Navigator.pop(context);
                     onButtonPressed('yes');
                   },
-                  child: Text('Yes'),
+                  child: const Text('Yes'),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                     onButtonPressed('no');
                   },
-                  child: Text('No'),
+                  child: const Text('No'),
                 ),
               ],
             ),
